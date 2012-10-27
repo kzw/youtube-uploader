@@ -116,7 +116,10 @@ public class doWork extends Thread{
                 if(2==allFileCount){
                     uploadFrame.pb.setIndeterminate(false);
                     uploadFrame.pb.setStringPainted(true);
+                } else if(1==allFileCount){
+                    uploadFrame.pb.setStringPainted(false);
                 }
+                
                 if(null!=doneFiles.get(path))continue;
 
                 wasProcessed = false;

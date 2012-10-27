@@ -14,13 +14,13 @@ import com.google.gdata.data.youtube.VideoEntry;
 import com.google.gdata.data.youtube.YouTubeMediaGroup;
 import com.google.gdata.data.youtube.YouTubeNamespace;
 import com.google.gdata.util.ServiceException;
-import kzw.youtube.gui.DataPanel;
-import kzw.youtube.gui.uploadFrame;
 import java.io.*;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.activation.MimetypesFileTypeMap;
+import kzw.youtube.gui.DataPanel;
+import kzw.youtube.gui.uploadFrame;
 
 
 public class YouTube extends Thread{
@@ -75,7 +75,7 @@ public class YouTube extends Thread{
         currentFileSize=videoFile.length()/1024;
         MediaFileSource ms = new MediaFileSource(videoFile, new MimetypesFileTypeMap().getContentType(videoFile));
 
-        String videoTitle = null;
+        String videoTitle;
         if(currentTitle == null){
             videoTitle = path;
         } else {
