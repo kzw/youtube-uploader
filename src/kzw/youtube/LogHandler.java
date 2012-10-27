@@ -4,11 +4,11 @@
  */
 package kzw.youtube;
 
-import kzw.youtube.gui.DataPanel;
-import kzw.youtube.gui.uploadFrame;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
+import kzw.youtube.gui.DataPanel;
+import kzw.youtube.gui.uploadFrame;
 
 /**
  *

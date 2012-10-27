@@ -5,10 +5,6 @@
 package kzw.youtube.gui;
 
 import com.google.gdata.util.ServiceException;
-import kzw.youtube.PlayList;
-import kzw.youtube.YTservice;
-import kzw.youtube.YouTube;
-import kzw.youtube.doWork;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,6 +30,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import kzw.youtube.PlayList;
+import kzw.youtube.YTservice;
+import kzw.youtube.YouTube;
+import kzw.youtube.doWork;
 
 /**
  *

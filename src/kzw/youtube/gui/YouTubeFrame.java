@@ -4,10 +4,6 @@
  */
 package kzw.youtube.gui;
 
-import kzwdesktop.MainFrame;
-import kzwencryption.Encryption;
-import kzw.youtube.Main;
-import kzw.youtube.YouTube;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,6 +23,10 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import kzw.youtube.Main;
+import kzw.youtube.YouTube;
+import kzwdesktop.MainFrame;
+import kzwencryption.Encryption;
 
 /**
  *

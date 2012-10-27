@@ -4,7 +4,6 @@
  */
 package kzw.youtube.gui;
 
-import kzw.youtube.Main;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.util.logging.Level;
@@ -16,6 +15,7 @@ import javax.swing.JProgressBar;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import kzw.youtube.Main;
 
 /**
  *

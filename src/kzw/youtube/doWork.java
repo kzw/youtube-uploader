@@ -4,9 +4,6 @@
  */
 package kzw.youtube;
 
-import kzw.youtube.gui.DataPanel;
-import kzw.youtube.gui.YouTubeFrame;
-import kzw.youtube.gui.uploadFrame;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -20,6 +17,9 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import kzw.youtube.gui.DataPanel;
+import kzw.youtube.gui.YouTubeFrame;
+import kzw.youtube.gui.uploadFrame;
 
 public class doWork extends Thread{
         private String moveDir;
