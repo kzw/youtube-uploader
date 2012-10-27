@@ -16,12 +16,12 @@
 
 package kzw.youtube;
 
-import kzw.youtube.gui.DataPanel;
-import kzw.youtube.gui.YouTubeFrame;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 import javax.swing.SwingUtilities;
+import kzw.youtube.gui.DataPanel;
+import kzw.youtube.gui.YouTubeFrame;
 
 /**
  * Demonstrates YouTube Data API operation to upload large media files.
