@@ -28,6 +28,7 @@ public class uploadFrame extends JDialog {
     public static final JProgressBar sizePb=new JProgressBar(SwingConstants.HORIZONTAL);
     public static final JProgressBar filePb = new JProgressBar(SwingConstants.HORIZONTAL);
     public static final JTextField rateText = new JTextField();
+    public static final JLabel currentFile = new JLabel("Current file progress");
     
     final static JTextArea log=new JTextArea(40,95);
 
@@ -44,7 +45,7 @@ public class uploadFrame extends JDialog {
         P.add(new JLabel("Total size progress"));
         P.add(sizePb);
         
-        P.add(new JLabel("Current file progress"));
+        P.add(currentFile);
         P.add(filePb);
         P.add(new JLabel("Recent file upload rate in kB/s"));
         P.add(rateText);

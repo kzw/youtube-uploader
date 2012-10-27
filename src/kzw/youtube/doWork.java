@@ -124,9 +124,18 @@ public class doWork extends Thread{
 
                 wasProcessed = false;
                 Long size = (Long) fileSize.get(path);
-                Long sizeMB = size/1024/1024;
+                int sizeKB = size.intValue()/1024;
+                int sizeMB = sizeKB/1024;
+                String sizeToShow = sizeMB  < 1 ? sizeKB +"KB": sizeMB +"MB";
                 Long startEpoch = new Date().getTime();
-                logger.info("Processing "+fileName.get(path)+" with size "+ sizeMB + "MB");
+                String fn = (String) fileName.get(path);
+                logger.log(Level.INFO, "Processing {0} with size {1}", new Object[]{fn, sizeToShow});
+                String label = fn;
+                if(label.length()>18){
+                    label = fn.substring(0, 14)+"...";
+                    uploadFrame.currentFile.setToolTipText(fn);
+                }
+                uploadFrame.currentFile.setText(label +" ("+sizeToShow+")");
                 float rate;
                 
                 // TODO: set the parameters from UI
