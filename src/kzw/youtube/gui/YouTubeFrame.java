@@ -34,8 +34,8 @@ import javax.swing.JTextField;
  */
 public class YouTubeFrame extends MainFrame {
     
-    static String UserNameString;
-    static String PasswordString;
+    static String UserNameString="";
+    static String PasswordString="";
     public static final JCheckBoxMenuItem privateFlag = new JCheckBoxMenuItem("private video");
     public static byte[] ENCRYPTION_KEY={38,-16,16,-45,74,-3};
     private static final String USERNAME_KEY = "username";
