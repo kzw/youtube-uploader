@@ -45,9 +45,7 @@ public class DataPanel extends JPanel implements ActionListener{
     private Preferences P=Preferences.userNodeForPackage(getClass());
     private static final String PLAYLIST_KEY = "playlist";
     private static final String LAST_DIR="last dir";
-    private static final String USERNAME_KEY = "username";
     private static final String MOVEFOLDER_KEY = "movefolder";
-    private static final String PASSWORD_KEY = "password";
     public static final Logger logger = Logger.getLogger(DataPanel.class.getName());
     
     private final static String INFO_LEVEL = "info";
@@ -237,7 +235,6 @@ public class DataPanel extends JPanel implements ActionListener{
                     JOptionPane.showMessageDialog(null,"Username required.  Set it in the menu");
                     return;
                 }
-                P.put(USERNAME_KEY,userNameString);
                 String passwordString = YouTubeFrame.PasswordString;
                 if(passwordString.isEmpty()){
                     JOptionPane.showMessageDialog(null, "Password required.  Set it in the menu");
