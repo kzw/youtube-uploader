@@ -196,8 +196,8 @@ public class doWork extends Thread{
             tempObj.delete();
             logger.info("all done");
         }
-        static synchronized int getTotalSize(){
-            return totalSize;
-        }
+    static synchronized int getTotalSize(){
+        return totalSize;
+    }
 
 }
