@@ -47,7 +47,7 @@ public class uploadFrame extends JDialog {
         
         P.add(currentFile);
         P.add(filePb);
-        P.add(new JLabel("Recent file upload rate in kB/s"));
+        P.add(new JLabel("Recent file upload rate"));
         P.add(rateText);
         rateText.setEditable(false);
         

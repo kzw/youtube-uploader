@@ -162,7 +162,7 @@ public class doWork extends Thread{
                     rate= (float) (size.floatValue()/delta.floatValue()/1024*1000);
                     DecimalFormat myFormatter = new DecimalFormat("####.##");
                     String rateString = myFormatter.format(rate);
-                    uploadFrame.rateText.setText(rateString);
+                    uploadFrame.rateText.setText(rateString + " kB/s");
                 }
                 doneFiles.put(path, 1);
                 if(moveDir==null || moveDir.equals("")) continue;
