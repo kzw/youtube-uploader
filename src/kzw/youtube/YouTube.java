@@ -165,9 +165,11 @@ public class YouTube extends Thread{
         }
         logger.log(Level.FINE, "video id is {0}", createdEntry.getMediaGroup().getVideoId());
         if(afterPlayListURL!=null){
+            logger.fine("Moving to playlist");
             PlaylistEntry ple = new PlaylistEntry(createdEntry);
             try {
                 service.insert(afterPlayListURL, ple);
+                logger.fine("successfully moved to playlist");
             } catch (IOException ex) {
                 logger.log(Level.SEVERE, null, ex);
                 uploadSuccess=false;
