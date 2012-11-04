@@ -4,6 +4,8 @@ features:
 	- add to playlist after upload
 	- move the local file to a folder after upload
 	- resumable upload
+	- save credentials with encryption
+	- most settings are remembered
 
 known-issues
 	- move to playlist seems to be broken if logging is off on windows.  turn on logging in windows
