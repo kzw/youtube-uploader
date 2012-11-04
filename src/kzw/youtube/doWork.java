@@ -31,7 +31,7 @@ public class doWork extends Thread{
         private URL playListURL;
         private ArrayList<String> fileList = new ArrayList<String>();
         private static int totalSize=0;
-        final static Logger logger = Logger.getLogger(doWork.class.getName());
+        private final static Logger logger = YouTubeLogger.getIt(doWork.class.getName());
         private String titleSeed;
         private String description;
         private String keywords;
@@ -113,7 +113,6 @@ public class doWork extends Thread{
             Integer currentCount=0;
             uploadFrame.sizePb.setIndeterminate(false);
             int allFileCount=0;
-            int titleSeedNumber=0;
             for(String path : fileList){
                 try {
                     if( 0 == currentCount && wasProcessed) {
@@ -160,9 +159,8 @@ public class doWork extends Thread{
                 YouTube Yt=new YouTube(YouTubeFrame.privateSetting,"People",YTservice.getService());
                 String titleString;
                 if(titleSeed==null) titleString = path;
-                else {
-                    titleString = titleSeed + titleSeedNumber++;
-                }
+                else titleString = titleSeed + "-"+ allFileCount;
+                
                 Yt.setPlayList(playListURL)
                     .setPath(path)
                     .videoTitle(titleString)
@@ -201,9 +199,9 @@ public class doWork extends Thread{
                         moveSuccess=true;
                         break;
                     }
-                    logger.fine("Failed to move on attempt "+moveAttempt+" Waiting for 0.5 sec");
+                    logger.log(Level.FINE, "Failed to move on attempt {0} Waiting for 0.5 sec", moveAttempt);
                     System.gc();
-                    logger.fine("Thread alive status is "+Yt.isAlive());
+                    logger.log(Level.FINE, "Thread alive status is {0}", Yt.isAlive());
                     try {
                         Thread.sleep(500);
                     } catch (InterruptedException ex1) {
@@ -212,7 +210,7 @@ public class doWork extends Thread{
                     }
                 }
                 if(moveSuccess) {
-                    if(moveAttempt>1){ logger.fine("Managed to move on attempt number "+moveAttempt); }
+                    if(moveAttempt>1){ logger.log(Level.FINE, "Managed to move on attempt number {0}", moveAttempt); }
                     continue;
                 }
                 logger.warning("Failed to move video to folder after 20 tries");

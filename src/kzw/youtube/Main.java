@@ -43,32 +43,12 @@ public class Main {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    createAndShowGUI();
+                    frame = new YouTubeFrame();        
                 } catch (Exception ex) {
                     Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
 
-    }
-
-    private static void createAndShowGUI() throws Exception {
-        
-        String[] classes={"YouTube", "doWork", "DataPanel"};
-        
-        LogHandler lh = new LogHandler();
-        lh.setFormatter(new SimpleFormatter());
-        lh.setLevel(Level.FINE);
-        
-        YouTube.logger.addHandler(lh);
-        YouTube.logger.setUseParentHandlers(false);
-
-        doWork.logger.addHandler(lh);
-        doWork.logger.setUseParentHandlers(false);
-
-        DataPanel.logger.addHandler(lh);
-        DataPanel.logger.setUseParentHandlers(false);
-        
-        frame = new YouTubeFrame();        
     }
 }

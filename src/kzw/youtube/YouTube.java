@@ -47,7 +47,7 @@ public class YouTube extends Thread{
     private String description;
     
     // refactor ala glacier project
-    final static Logger logger = Logger.getLogger(YouTube.class.getName());
+    private final static Logger logger = YouTubeLogger.getIt(YouTube.class.getName());
     private String keywords;
     
     YouTube setPlayList(URL u) {
@@ -183,12 +183,15 @@ public class YouTube extends Thread{
             System.exit(2);
         }
         logger.log(Level.FINE, "video id is {0}", createdEntry.getMediaGroup().getVideoId());
+        System.err.println("preparing for playlist work");
         if(afterPlayListURL!=null){
+            System.err.println("moving to playlist");
             logger.fine("Moving to playlist");
             PlaylistEntry ple = new PlaylistEntry(createdEntry);
             try {
                 service.insert(afterPlayListURL, ple);
                 logger.fine("successfully moved to playlist");
+                System.err.append("successfully moved to playlist");
             } catch (IOException ex) {
                 logger.log(Level.SEVERE, null, ex);
                 uploadSuccess=false;

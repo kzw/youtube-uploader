@@ -33,6 +33,7 @@ import javax.swing.JTextField;
 import kzw.youtube.PlayList;
 import kzw.youtube.YTservice;
 import kzw.youtube.YouTube;
+import kzw.youtube.YouTubeLogger;
 import kzw.youtube.doWork;
 
 /**
@@ -46,7 +47,7 @@ public class DataPanel extends JPanel implements ActionListener{
     private static final String PLAYLIST_KEY = "playlist";
     private static final String LAST_DIR="last dir";
     private static final String MOVEFOLDER_KEY = "movefolder";
-    public static final Logger logger = Logger.getLogger(DataPanel.class.getName());
+    private static final Logger logger = YouTubeLogger.getIt(DataPanel.class.getName());
     
     private final static String INFO_LEVEL = "info";
     private final static String VERBOSE_LEVEL = "verbose";
