@@ -1,1 +1,2 @@
-zip ../youtube.zip dist/lib/* dist/youtube.jar
+cd dist
+zip ../youtube.zip lib/* youtube.jar
