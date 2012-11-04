@@ -217,7 +217,7 @@ public class DataPanel extends JPanel implements ActionListener{
                     logger.log(Level.SEVERE, null, ex);
                 }
                 if(count>0) {
-                    resetPB();
+                    uploadFrame.resetPB();
                     uploadButton.setEnabled(true);
                 }
             }
@@ -244,11 +244,6 @@ public class DataPanel extends JPanel implements ActionListener{
         final JTextField sleepValue = new JTextField();
         add(sleepValue);
         //</editor-fold>
-        
-        uploadFrame.filePb.setMaximum(100);         
-        uploadFrame.pb.setIndeterminate(true);
-        uploadFrame.pb.setSize(300,44);
-        uploadFrame.sizePb.setIndeterminate(true);
 
         //<editor-fold defaultstate="collapsed" desc="upload button UI">         
         uploadButton.setEnabled(false);
@@ -326,15 +321,6 @@ public class DataPanel extends JPanel implements ActionListener{
         offLevel.addActionListener(this);        
     }
           
-    private void resetPB(){
-        uploadFrame.filePb.setMaximum(100);         
-        uploadFrame.pb.setIndeterminate(true);
-        uploadFrame.sizePb.setIndeterminate(true); 
-        uploadFrame.filePb.setValue(0);
-        uploadFrame.pb.setValue(0);
-        uploadFrame.sizePb.setValue(0);
-        YouTube.resetCurrentTotalSize();
-    }
     private void addLabel(String labelText){
         JLabel label = new JLabel(labelText);
         add(label);
