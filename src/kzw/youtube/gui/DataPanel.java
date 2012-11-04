@@ -68,6 +68,7 @@ public class DataPanel extends JPanel implements ActionListener{
         super(new GridLayout(0,2));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
+        //<editor-fold defaultstate="collapsed" desc="log level UI">
         addLabel("Select log level");
         final ButtonGroup bg = new ButtonGroup();
         bg.add(offLevel);
@@ -85,26 +86,36 @@ public class DataPanel extends JPanel implements ActionListener{
         buttonP.add(infoLevel);
         buttonP.add(verboseLevel);
         add(buttonP);
+        //</editor-fold>
         
+        //<editor-fold defaultstate="collapsed" desc="title seed UI">
         addLabel("Title seed");
         final JTextField titleInput = new JTextField();
         add(titleInput);
+        //</editor-fold>
         
+        //<editor-fold defaultstate="collapsed" desc="Description UI">        
         addLabel("Description");
         final JTextField descriptionInput = new JTextField();
         add(descriptionInput);
+        //</editor-fold>
         
+        //<editor-fold defaultstate="collapsed" desc="keywords UI">
         addLabel("Keywords");
         final JTextField keywordsInput = new JTextField();
         add(keywordsInput);
+        //</editor-fold>
         
+        //<editor-fold defaultstate="collapsed" desc="playlist UIs">
         // TODO get this from drop down.. allow creation
         addLabel("Move videos to this playlist");
         final JTextField playlistInput = new JTextField();
         add(playlistInput);
         playlistInput.setText(P.get(PLAYLIST_KEY, ""));
         playlistInput.setToolTipText("Type playlist to move your uploaded videos");
+        //</editor-fold>
         
+        //<editor-fold defaultstate="collapsed" desc="move to folder UI">
         addLabel("folder to move to after upload");
         final JTextField moveFolder = new JTextField();
         moveFolder.setEditable(false);
@@ -123,6 +134,7 @@ public class DataPanel extends JPanel implements ActionListener{
                 P.put(MOVEFOLDER_KEY, file.getAbsolutePath());
             }
 
+            //<editor-fold defaultstate="collapsed" desc="no ops">
             @Override
             public void mousePressed(MouseEvent me) { }
 
@@ -134,19 +146,24 @@ public class DataPanel extends JPanel implements ActionListener{
 
             @Override
             public void mouseExited(MouseEvent me) { }
+            //</editor-fold>
         });
         add(moveFolder);
         moveFolder.setText(P.get(MOVEFOLDER_KEY, null));
         moveFolder.setToolTipText("Click here to set a folder on your computer to move uploaded files");
+        //</editor-fold>
         
+        //<editor-fold defaultstate="collapsed" desc="choose video UI part 1">
         addLabel("choose videos");
         final JTextField videos = new JTextField();
         videos.setEditable(false);
         videos.setText(P.get(LAST_DIR, ""));
-
+        //</editor-fold>
+        
         // This variable is needed earlier
         final JButton uploadButton = new JButton("upload");
         
+        //<editor-fold defaultstate="collapsed" desc="choose video UI part 2">
         videos.addMouseListener(new MouseListener(){
             @Override
             public void mouseClicked(MouseEvent me) {
@@ -204,7 +221,7 @@ public class DataPanel extends JPanel implements ActionListener{
                     uploadButton.setEnabled(true);
                 }
             }
-
+            //<editor-fold defaultstate="collapsed" desc="no ops">
             @Override
             public void mousePressed(MouseEvent me) { }
 
@@ -216,19 +233,24 @@ public class DataPanel extends JPanel implements ActionListener{
 
             @Override
             public void mouseExited(MouseEvent me) { }
+            //</editor-fold>
         });
         add(videos);
         videos.setToolTipText("Click here to select your videos");
+        //</editor-fold>
         
+        //<editor-fold defaultstate="collapsed" desc="sleep UI">
         addLabel("sleep/minute");
         final JTextField sleepValue = new JTextField();
         add(sleepValue);
+        //</editor-fold>
         
         uploadFrame.filePb.setMaximum(100);         
         uploadFrame.pb.setIndeterminate(true);
         uploadFrame.pb.setSize(300,44);
         uploadFrame.sizePb.setIndeterminate(true);
 
+        //<editor-fold defaultstate="collapsed" desc="upload button UI">         
         uploadButton.setEnabled(false);
         add(uploadButton);
         uploadButton.addActionListener(new ActionListener(){
@@ -295,8 +317,7 @@ public class DataPanel extends JPanel implements ActionListener{
                 }
             }
         });
-        
-
+        //</editor-fold>
     }
     
     void addListeners(){
