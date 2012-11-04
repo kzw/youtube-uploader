@@ -21,10 +21,11 @@ class LogHandler extends Handler{
         if(DataPanel.selectedLogLevel.intValue()<Level.INFO.intValue()){
             uploadFrame.writeLog(getFormatter().format(lr));
         } else {
-            uploadFrame.writeLog(lr.getThreadID()+" "+lr.getSourceClassName()+" "+lr.getSourceMethodName()+" "+lr.getMessage()+"\n");
+            uploadFrame.writeLog(lr.getThreadID()+" "+lr.getSourceClassName()+" "+lr.getSourceMethodName()+" "+getFormatter().formatMessage(lr) +"\n");
         }
     }
-
+    
+    //<editor-fold defaultstate="collapsed" desc="no ops">
     @Override
     public void flush() {
     }
@@ -32,5 +33,5 @@ class LogHandler extends Handler{
     @Override
     public void close() throws SecurityException {
     }
-    
+    //</editor-fold>
 }

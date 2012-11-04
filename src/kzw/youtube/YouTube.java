@@ -190,7 +190,7 @@ public class YouTube extends Thread{
             PlaylistEntry ple = new PlaylistEntry(createdEntry);
             try {
                 service.insert(afterPlayListURL, ple);
-                logger.fine("successfully moved to playlist");
+                logger.info("successfully moved to playlist");
                 System.err.append("successfully moved to playlist");
             } catch (IOException ex) {
                 logger.log(Level.SEVERE, null, ex);

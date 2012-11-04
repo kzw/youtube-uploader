@@ -96,10 +96,8 @@ public class doWork extends Thread{
                     fileName.put(vp, f.getName());
                     fileSize.put(vp, f.length());
                 }
-                uploadFrame.filePb.setStringPainted(true);
-                uploadFrame.sizePb.setStringPainted(true);
-                uploadFrame.pb.setMaximum(fileCount);
-                uploadFrame.sizePb.setMaximum(totalSize);
+                uploadFrame.reInit(fileCount,totalSize);
+
             } catch (IOException ex) {
                 logger.log(Level.SEVERE, null, ex);
             }
@@ -111,12 +109,11 @@ public class doWork extends Thread{
 
             Boolean wasProcessed=true;
             Integer currentCount=0;
-            uploadFrame.sizePb.setIndeterminate(false);
             int allFileCount=0;
             for(String path : fileList){
                 try {
                     if( 0 == currentCount && wasProcessed) {
-                        uploadFrame.pb.setIndeterminate(true);
+                        uploadFrame.fileCountPb.setIndeterminate(true);
                         // This should make google happy
                        
                     } else if(0<currentCount) {
@@ -131,10 +128,10 @@ public class doWork extends Thread{
                 }
                 allFileCount++;
                 if(2==allFileCount){
-                    uploadFrame.pb.setIndeterminate(false);
-                    uploadFrame.pb.setStringPainted(true);
+                    uploadFrame.fileCountPb.setIndeterminate(false);
+                    uploadFrame.fileCountPb.setStringPainted(true);
                 } else if(1==allFileCount){
-                    uploadFrame.pb.setStringPainted(false);
+                    uploadFrame.fileCountPb.setStringPainted(false);
                 }
                 
                 if(null!=doneFiles.get(path))continue;
@@ -177,9 +174,8 @@ public class doWork extends Thread{
                 wasProcessed = Yt.uploadSuccess;
                 if(!wasProcessed) return;
                 currentCount++;
-                if(currentCount==1)uploadFrame.pb.setIndeterminate(false);
-                uploadFrame.pb.setValue(allFileCount);
-                uploadFrame.pb.setString(allFileCount+"/"+fileCount);
+                uploadFrame.updateFileCountPb(currentCount,allFileCount,fileCount);
+
                 Long finishEpoch = new Date().getTime();
                 Long delta = finishEpoch - startEpoch;
                 if(delta>0){
