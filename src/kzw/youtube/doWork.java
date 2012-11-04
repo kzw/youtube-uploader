@@ -32,21 +32,39 @@ public class doWork extends Thread{
         private ArrayList<String> fileList = new ArrayList<String>();
         private static int totalSize=0;
         final static Logger logger = Logger.getLogger(doWork.class.getName());
-                
-        public void setPlayListURL(URL plurl){
+        private String titleSeed;
+        private String description;
+        private String keywords;
+        
+        public doWork(File t){
+            tempObj = t;
+        }
+        
+        public doWork setPlayListURL(URL plurl){
             playListURL=plurl;
-        }
-        public void setTemp(File f){
-            tempObj = f;
+            return this;
         }
         
-        public void setSleep(Long s){
+        public doWork setSleep(Long s){
             sleepMin = s;
+            return this;
         }
         
-        public void setDir(String m){
+        public doWork setDir(String m){
             moveDir = m;
+            return this;
         }
+        
+        public doWork setTitle(String t){
+            titleSeed = t;
+            return this;
+        }
+        
+        public doWork setDescription(String d){
+            description = d;
+            return this;
+        }
+        
         @Override
         public void run(){
             logger.setLevel(DataPanel.selectedLogLevel);
@@ -95,6 +113,7 @@ public class doWork extends Thread{
             Integer currentCount=0;
             uploadFrame.sizePb.setIndeterminate(false);
             int allFileCount=0;
+            int titleSeedNumber=0;
             for(String path : fileList){
                 try {
                     if( 0 == currentCount && wasProcessed) {
@@ -104,7 +123,6 @@ public class doWork extends Thread{
                     } else if(0<currentCount) {
                         String s=uploadFrame.rateText.getText();
                         uploadFrame.rateText.setText("waiting for 4 sec between videos");
-//                        logger.warning("Waiting for 4 sec to make google happy");
                         Thread.sleep(4000);
                         if(s!=null) uploadFrame.rateText.setText(s);
                     }
@@ -140,8 +158,16 @@ public class doWork extends Thread{
                 
                 // TODO: set the parameters from UI
                 YouTube Yt=new YouTube(YouTubeFrame.privateSetting,"People",YTservice.getService());
-                Yt.setPlayList(playListURL);
-                Yt.setPath(path);
+                String titleString;
+                if(titleSeed==null) titleString = path;
+                else {
+                    titleString = titleSeed + titleSeedNumber++;
+                }
+                Yt.setPlayList(playListURL)
+                    .setPath(path)
+                    .videoTitle(titleString)
+                    .setKeywords(keywords)
+                    .setDescription(description);
                 Yt.start();
                 try {
                     Yt.join();
@@ -198,6 +224,11 @@ public class doWork extends Thread{
         }
     static synchronized int getTotalSize(){
         return totalSize;
+    }
+
+    public doWork setKeywords(String text) {
+        keywords = text;
+        return this;
     }
 
 }

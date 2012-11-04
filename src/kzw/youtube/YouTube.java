@@ -44,24 +44,42 @@ public class YouTube extends Thread{
     private static final int DEFAULT_CHUNK_SIZE = 700000;
     static int currentSizeKB=0;
     private Long currentFileSize=0L;
+    private String description;
     
+    // refactor ala glacier project
     final static Logger logger = Logger.getLogger(YouTube.class.getName());
+    private String keywords;
     
-    void setPlayList(URL u) {
-        this.afterPlayListURL=u;
+    YouTube setPlayList(URL u) {
+        afterPlayListURL=u;
+        return this;
+    }
+    
+    YouTube setKeywords(String s){
+        keywords = s;
+        return this;
     }
     
     public YouTube(Boolean PrivateVideo,String categoryString,YouTubeService service) {
         this.service = service;
         this.privateVideo = PrivateVideo;
+        // set category via UI
         this.mediaCategory = new MediaCategory(YouTubeNamespace.CATEGORY_SCHEME, categoryString);
     }
 
-    void videoTitle(String title){
-        this.currentTitle = title;
+    YouTube videoTitle(String title){
+        currentTitle = title;
+        return this;
     }
-    void setPath(String p){
-        this.path = p;
+    
+    YouTube setPath(String p){
+        path = p;
+        return this;
+    }
+    
+    YouTube setDescription(String d){
+        description = d;
+        return this;
     }
     
     @Override
@@ -79,7 +97,7 @@ public class YouTube extends Thread{
         if(currentTitle == null){
             videoTitle = path;
         } else {
-            videoTitle = this.currentTitle;
+            videoTitle = currentTitle;
         }
 
         VideoEntry newEntry = new VideoEntry();
@@ -91,9 +109,10 @@ public class YouTube extends Thread{
         mg.getTitle().setPlainTextContent(videoTitle);
         mg.setKeywords(new MediaKeywords());
         // TODO: allow this set via GUI
-        //mg.getKeywords().addKeyword("");
+        mg.getKeywords().addKeyword(keywords);
         mg.setDescription(new MediaDescription());
-        mg.getDescription().setPlainTextContent(videoTitle);
+        if(description==null) description = videoTitle;
+        mg.getDescription().setPlainTextContent(description);
         
         //TODO: allow this set via GUI
         mg.setPrivate(privateVideo);

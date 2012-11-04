@@ -83,9 +83,21 @@ public class DataPanel extends JPanel implements ActionListener{
         buttonP.add(offLevel);
         buttonP.add(infoLevel);
         buttonP.add(verboseLevel);
-        //bg.getSelection().getActionCommand();
         add(buttonP);
         
+        addLabel("Title seed");
+        final JTextField titleInput = new JTextField();
+        add(titleInput);
+        
+        addLabel("Description");
+        final JTextField descriptionInput = new JTextField();
+        add(descriptionInput);
+        
+        addLabel("Keywords");
+        final JTextField keywordsInput = new JTextField();
+        add(keywordsInput);
+        
+        // TODO get this from drop down.. allow creation
         addLabel("Move videos to this playlist");
         final JTextField playlistInput = new JTextField();
         add(playlistInput);
@@ -263,11 +275,13 @@ public class DataPanel extends JPanel implements ActionListener{
                 //</editor-fold>
                 
                 Gui.log.setText(null);
-                final doWork worker = new doWork();
-                worker.setDir(moveFolder.getText());
-                worker.setPlayListURL(playListFeedURL);
-                worker.setSleep(1L*sleepMinute);
-                worker.setTemp(temp);
+                final doWork worker = new doWork(temp);
+                worker.setDir(moveFolder.getText())
+                        .setPlayListURL(playListFeedURL)
+                        .setSleep(1L*sleepMinute)
+                        .setTitle(titleInput.getText())
+                        .setDescription(descriptionInput.getText())
+                        .setKeywords(keywordsInput.getText());
                 worker.start();
                 new uploadFrame();
                 if(worker.isAlive()){
