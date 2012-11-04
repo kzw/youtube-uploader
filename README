@@ -1,0 +1,10 @@
+destktop GUI youtube upload client
+tested on windows 7 and Mac OS X lion
+features:
+	- add to playlist after upload
+	- move the local file to a folder after upload
+	- resumable upload
+
+known-issues
+	- move to playlist seems to be broken if logging is off on windows.  turn on logging in windows
+
