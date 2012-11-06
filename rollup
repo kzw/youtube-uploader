@@ -1,2 +1,3 @@
 cd dist
 zip ../youtube.zip lib/* youtube.jar
+mv ../youtube.zip ~
