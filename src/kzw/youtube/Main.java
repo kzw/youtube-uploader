@@ -2,9 +2,7 @@ package kzw.youtube;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 import javax.swing.SwingUtilities;
-import kzw.youtube.gui.DataPanel;
 import kzw.youtube.gui.YouTubeFrame;
 
 public class Main {
