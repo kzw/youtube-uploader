@@ -20,7 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.activation.MimetypesFileTypeMap;
 import kzw.youtube.gui.DataPanel;
-import kzw.youtube.gui.uploadFrame;
+import kzw.youtube.gui.UploadDialog;
 
 
 public class YouTube extends Thread{
@@ -216,16 +216,16 @@ public class YouTube extends Thread{
                     break;
                 case IN_PROGRESS:
                     int percent = (int) (upl.getProgress()*100);
-                    uploadFrame.filePb.setValue(percent);
-                    uploadFrame.filePb.setString(percent+"%");
+                    UploadDialog.filePb.setValue(percent);
+                    UploadDialog.filePb.setString(percent+"%");
                     totalSize=GetSetCurrentTotalSize(0);
                     totalSize += (int)(upl.getProgress()*currentFileSize);
-                    uploadFrame.sizePb.setValue(totalSize);
+                    UploadDialog.sizePb.setValue(totalSize);
                     float totalPercent=(float)totalSize/doWork.getTotalSize()*100;
                     int percentString = (int) totalPercent;
                     totalSize/=1024;
                     int allFilesSize=doWork.getTotalSize()/1024;
-                    uploadFrame.sizePb.setString(totalSize+" MB/"+allFilesSize+" MB ("+percentString+"%)");
+                    UploadDialog.sizePb.setString(totalSize+" MB/"+allFilesSize+" MB ("+percentString+"%)");
                     break;
                 case NOT_STARTED:
                     logger.warning("Upload Not Started");

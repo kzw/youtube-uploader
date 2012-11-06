@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package kzw.youtube.gui;
 
 import java.awt.BorderLayout;
@@ -22,7 +18,7 @@ import kzw.youtube.YouTube;
  *
  * @author kz
  */
-public class uploadFrame extends JDialog {
+public class UploadDialog extends JDialog {
 
     
     public static final JProgressBar fileCountPb=new JProgressBar(SwingConstants.HORIZONTAL);
@@ -31,7 +27,7 @@ public class uploadFrame extends JDialog {
     public static final JTextField rateText = new JTextField();
     public static final JLabel currentFile = new JLabel("Current file progress");
     private static Boolean first_time=true;
-    final static JTextArea log=new JTextArea(40,95);
+    private final static JTextArea log=new JTextArea(40,95);
 
     public static void updateFileCountPb(Integer currentCount, int allFileCount, Integer fileCount) {
         if(currentCount==1)fileCountPb.setIndeterminate(false);
@@ -58,13 +54,13 @@ public class uploadFrame extends JDialog {
     }
 
     private void init(){
-        uploadFrame.filePb.setMaximum(100);         
-        uploadFrame.fileCountPb.setIndeterminate(true);
-        uploadFrame.fileCountPb.setSize(300,44);
-        uploadFrame.sizePb.setIndeterminate(true);
+        UploadDialog.filePb.setMaximum(100);         
+        UploadDialog.fileCountPb.setIndeterminate(true);
+        UploadDialog.fileCountPb.setSize(300,44);
+        UploadDialog.sizePb.setIndeterminate(true);
     }
     
-    public uploadFrame(){
+    public UploadDialog(){
         super(Main.frame,true);
         if(first_time){
             init();

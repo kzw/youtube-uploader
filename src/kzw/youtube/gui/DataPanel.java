@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package kzw.youtube.gui;
 
 import com.google.gdata.util.ServiceException;
@@ -36,10 +32,6 @@ import kzw.youtube.YouTube;
 import kzw.youtube.YouTubeLogger;
 import kzw.youtube.doWork;
 
-/**
- *
- * @author me
- */
 public class DataPanel extends JPanel implements ActionListener{
     
     //TODO allow user input on this
@@ -173,7 +165,7 @@ public class DataPanel extends JPanel implements ActionListener{
                 fc.setMultiSelectionEnabled(true);
                 fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
                 if( fc.showOpenDialog(DataPanel.this)!= JFileChooser.APPROVE_OPTION ) return;
-                Gui.log.setText(null);
+                MainPanel.log.setText(null);
                 try {
                     temp = File.createTempFile("test", ".videos");
                 } catch (IOException ex) {
@@ -205,7 +197,7 @@ public class DataPanel extends JPanel implements ActionListener{
                         for (String p: paths){
                             count++;
                             tempOut.write(p+"\n");
-                            Gui.log.append(p+"\n");
+                            MainPanel.log.append(p+"\n");
                         }
                     } catch (IOException ex) {
                         logger.log(Level.SEVERE, null, ex);
@@ -217,7 +209,7 @@ public class DataPanel extends JPanel implements ActionListener{
                     logger.log(Level.SEVERE, null, ex);
                 }
                 if(count>0) {
-                    uploadFrame.resetPB();
+                    UploadDialog.resetPB();
                     uploadButton.setEnabled(true);
                 }
             }
@@ -292,7 +284,7 @@ public class DataPanel extends JPanel implements ActionListener{
                 }
                 //</editor-fold>
                 
-                Gui.log.setText(null);
+                MainPanel.log.setText(null);
                 final doWork worker = new doWork(temp);
                 worker.setDir(moveFolder.getText())
                         .setPlayListURL(playListFeedURL)
@@ -301,7 +293,7 @@ public class DataPanel extends JPanel implements ActionListener{
                         .setDescription(descriptionInput.getText())
                         .setKeywords(keywordsInput.getText());
                 worker.start();
-                new uploadFrame();
+                new UploadDialog();
                 if(worker.isAlive()){
                     worker.interrupt();
                     try {

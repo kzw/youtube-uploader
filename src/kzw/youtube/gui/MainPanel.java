@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package kzw.youtube.gui;
 
 import java.awt.BorderLayout;
@@ -14,9 +10,9 @@ import javax.swing.JTextArea;
  *
  * @author kz
  */
-public class Gui extends JPanel {
+public class MainPanel extends JPanel {
     public final static JTextArea log=new JTextArea(35,22);
-    public Gui() throws Exception{
+    public MainPanel() throws Exception{
         super(new BorderLayout());
         log.setLineWrap(true);
         log.setWrapStyleWord(true); 

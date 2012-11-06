@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package kzw.youtube.gui;
 
 import java.awt.GridLayout;
@@ -42,7 +38,7 @@ public class YouTubeFrame extends MainFrame {
     private static final String PASSWORD_KEY = "password";
     private static final String PRIVATE_FLAG = "private";
     private Preferences P=Preferences.userNodeForPackage(getClass());
-    final static Logger logger = Logger.getLogger(YouTube.class.getName());
+    private final static Logger logger = Logger.getLogger(YouTube.class.getName());
     public static Boolean privateSetting;
 
     public YouTubeFrame() throws Exception{
@@ -51,7 +47,7 @@ public class YouTubeFrame extends MainFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Add content to the window.
-        add(new Gui());
+        add(new MainPanel());
         JMenuBar jm=new JMenuBar();
         JMenu menuPanel = new JMenu("Set up");
         final JMenuItem manageAccount = new JMenuItem("manage account");
