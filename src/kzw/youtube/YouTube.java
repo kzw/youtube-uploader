@@ -16,6 +16,7 @@ import com.google.gdata.data.youtube.YouTubeNamespace;
 import com.google.gdata.util.ServiceException;
 import java.io.*;
 import java.net.URL;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.activation.MimetypesFileTypeMap;
@@ -25,12 +26,15 @@ import kzw.youtube.gui.UploadDialog;
 
 public class YouTube extends Thread{
 
+    private Long startEpoch;
+    private Long endEpoch;
     private URL afterPlayListURL=null;
     private Boolean privateVideo;
     private MediaCategory mediaCategory;
     private String currentTitle = null;
     private String path;
     private YouTubeService service = null;
+    Boolean completeJob = true;
     public static final String RESUMABLE_UPLOAD_URL =
       "http://uploads.gdata.youtube.com/resumable/feeds/api/users/default/uploads";
 
@@ -42,13 +46,17 @@ public class YouTube extends Thread{
 
     /** Max size for each upload chunk */
     private static final int DEFAULT_CHUNK_SIZE = 700000;
-    static int currentSizeKB=0;
+    private static int currentSizeKB=0;
     private Long currentFileSize=0L;
     private String description;
     
     // refactor ala glacier project
     private final static Logger logger = YouTubeLogger.getIt(YouTube.class.getName());
     private String keywords;
+    
+    Long getDuration(){
+        return (endEpoch - startEpoch);
+    }
     
     YouTube setPlayList(URL u) {
         afterPlayListURL=u;
@@ -97,7 +105,7 @@ public class YouTube extends Thread{
         if(currentTitle == null){
             videoTitle = path;
         } else {
-            videoTitle = currentTitle;
+           videoTitle = currentTitle;
         }
 
         VideoEntry newEntry = new VideoEntry();
@@ -122,6 +130,7 @@ public class YouTube extends Thread{
         ResumableGDataFileUploader uploader = null;        
         if(interruptedUploader!=null && path.equals(interruptedPath)){
             uploader=interruptedUploader;
+            completeJob = false;
             uploader.resume();
         } else {
             try {
@@ -136,6 +145,7 @@ public class YouTube extends Thread{
             } catch (ServiceException ex) {
                 logger.log(Level.SEVERE, null, ex);
             }
+            startEpoch = new Date().getTime();
             uploader.start();
         }
         while (!uploader.isDone()) {
@@ -155,6 +165,7 @@ public class YouTube extends Thread{
           case COMPLETE:
             uploadSuccess=true;
             logger.info("One video uploaded successfully");
+            endEpoch = new Date().getTime();
             break;
           case CLIENT_ERROR:
             uploadSuccess=false;
@@ -216,16 +227,10 @@ public class YouTube extends Thread{
                     break;
                 case IN_PROGRESS:
                     int percent = (int) (upl.getProgress()*100);
-                    UploadDialog.filePb.setValue(percent);
-                    UploadDialog.filePb.setString(percent+"%");
+                    UploadDialog.updateFilePb(percent);
                     totalSize=GetSetCurrentTotalSize(0);
                     totalSize += (int)(upl.getProgress()*currentFileSize);
-                    UploadDialog.sizePb.setValue(totalSize);
-                    float totalPercent=(float)totalSize/doWork.getTotalSize()*100;
-                    int percentString = (int) totalPercent;
-                    totalSize/=1024;
-                    int allFilesSize=doWork.getTotalSize()/1024;
-                    UploadDialog.sizePb.setString(totalSize+" MB/"+allFilesSize+" MB ("+percentString+"%)");
+                    UploadDialog.updateTotalSizePb(totalSize);
                     break;
                 case NOT_STARTED:
                     logger.warning("Upload Not Started");
@@ -233,13 +238,12 @@ public class YouTube extends Thread{
             }
         }
     }
-    static synchronized int GetSetCurrentTotalSize (int current){
+    
+    private synchronized int GetSetCurrentTotalSize (int current){
             if(current==0) return currentSizeKB;
             currentSizeKB = current;
             return currentSizeKB;
     }
     
-    public static synchronized void resetCurrentTotalSize(){
-        currentSizeKB=0;
-    }
+    public static synchronized void resetCurrentTotalSize(){ currentSizeKB=0; }
 }

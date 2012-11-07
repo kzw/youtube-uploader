@@ -64,7 +64,6 @@ public class doWork extends Thread{
     @Override
     public void run(){
         logger.setLevel(DataPanel.selectedLogLevel);
-        // TODO create a frame here and log to the new text area
         if(sleepMin!=0) logger.fine("waiting for "+sleepMin+" minutes");
         try {
             sleep(sleepMin*1000L*60);
@@ -109,51 +108,32 @@ public class doWork extends Thread{
         for(String path : fileList){
             try {
                 if( 0 == currentCount && wasProcessed) {
-                    UploadDialog.fileCountPb.setIndeterminate(true);
+                    UploadDialog.updateFileCountPb(-1,null,1);
                     // This should make google happy
-
                 } else if(0<currentCount) {
-                    String s=UploadDialog.rateText.getText();
-                    UploadDialog.rateText.setText("waiting for 4 sec between videos");
+                    String oldString = UploadDialog.updateRate("waiting for 4 sec between videos");
                     Thread.sleep(4000);
-                    if(s!=null) UploadDialog.rateText.setText(s);
+                    if(oldString!=null) UploadDialog.updateRate(oldString);
                 }
             } catch (InterruptedException ex) {
                 logger.log(Level.SEVERE, null, ex);
                 return;
             }
-            allFileCount++;
-            if(2==allFileCount){
-                UploadDialog.fileCountPb.setIndeterminate(false);
-                UploadDialog.fileCountPb.setStringPainted(true);
-            } else if(1==allFileCount){
-                UploadDialog.fileCountPb.setStringPainted(false);
-            }
+            UploadDialog.resetFileCountPb(++allFileCount);            
 
             if(null!=doneFiles.get(path))continue;
 
             wasProcessed = false;
             Long size = (Long) fileSize.get(path);
-            int sizeKB = size.intValue()/1024;
-            int sizeMB = sizeKB/1024;
-            String sizeToShow = sizeMB  < 1 ? sizeKB +"KB": sizeMB +"MB";
-            Long startEpoch = new Date().getTime();
             String fn = (String) fileName.get(path);
+            String sizeToShow = UploadDialog.updateCurrentFile(size, fn);
             logger.log(Level.INFO, "Processing {0} with size {1}", new Object[]{fn, sizeToShow});
-            String label = fn;
-            if(label.length()>18){
-                label = fn.substring(0, 14)+"...";
-                UploadDialog.currentFile.setToolTipText(fn);
-            }
-            UploadDialog.currentFile.setText(label +" ("+sizeToShow+")");
-            float rate;
 
             // TODO: set the parameters from UI
             YouTube Yt=new YouTube(YouTubeFrame.privateSetting,"People",YTservice.getService());
             String titleString;
             if(titleSeed==null) titleString = path;
             else titleString = titleSeed + "-"+ allFileCount;
-
             Yt.setPlayList(playListURL)
                 .setPath(path)
                 .videoTitle(titleString)
@@ -167,19 +147,18 @@ public class doWork extends Thread{
                 Yt.interrupt();
                 return;
             }
-            wasProcessed = Yt.uploadSuccess;
-            if(!wasProcessed) return;
-            currentCount++;
-            UploadDialog.updateFileCountPb(currentCount,allFileCount,fileCount);
-
-            Long finishEpoch = new Date().getTime();
-            Long delta = finishEpoch - startEpoch;
-            if(delta>0){
-                rate= (float) (size.floatValue()/delta.floatValue()/1024*1000);
-                DecimalFormat myFormatter = new DecimalFormat("####.##");
+            
+            if(!Yt.uploadSuccess) return;
+            
+            UploadDialog.updateFileCountPb(++currentCount, allFileCount, fileCount);
+            Long delta = Yt.getDuration();
+            if(delta>0 && Yt.completeJob){
+                float rate=  size/delta.floatValue()/1024*1000;
+                DecimalFormat myFormatter = new DecimalFormat("####.#");
                 String rateString = myFormatter.format(rate);
-                UploadDialog.rateText.setText(rateString + " kB/s");
+                UploadDialog.updateRate(rateString + " kB/s");
             }
+            
             doneFiles.put(path, 1);
             if(moveDir==null || moveDir.equals("")) continue;
             File oldFile = new File(path);
@@ -205,13 +184,14 @@ public class doWork extends Thread{
                 if(moveAttempt>1){ logger.log(Level.FINE, "Managed to move on attempt number {0}", moveAttempt); }
                 continue;
             }
-            logger.warning("Failed to move video to folder after 20 tries");
+            logger.warning("Failed to move video to folder after 5 tries");
             JOptionPane.showMessageDialog(null,"Cannot move video to folder");
             return;
         }
         tempObj.delete();
         logger.info("all done");
     }
+    
     static synchronized int getTotalSize(){
         return totalSize;
     }
