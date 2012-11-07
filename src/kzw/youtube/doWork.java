@@ -133,15 +133,18 @@ public class doWork extends Thread{
             if(titleSeed==null || titleSeed.isEmpty()) titleString = new File(path).getName();         
             else titleString = titleSeed + "-"+ allFileCount;
             String tempPath;
-            try {
-                logger.info("Copying file to working copy");
-                tempPath = CopyToTemp.cp(path);
-            } catch (FileNotFoundException ex) {
-                logger.log(Level.SEVERE, null, ex);
-                return;
-            } catch (IOException ex) {
-                logger.log(Level.SEVERE, null, ex);
-                return;
+            if(moveDir==null || moveDir.equals("")) tempPath = path;
+            else {
+                try {
+                    logger.info("Copying file to working copy");
+                    tempPath = CopyToTemp.cp(path);
+                } catch (FileNotFoundException ex) {
+                    logger.log(Level.SEVERE, null, ex);
+                    return;
+                } catch (IOException ex) {
+                    logger.log(Level.SEVERE, null, ex);
+                    return;
+                }
             }
             //keywords implementation is wrong
             // total keywords length of 500 characters instead of 120, and each
