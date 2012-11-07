@@ -13,7 +13,6 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import kzw.youtube.Main;
 import kzw.youtube.YouTube;
-import kzw.youtube.doWork;
 
 /**
  *
