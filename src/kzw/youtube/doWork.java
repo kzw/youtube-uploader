@@ -136,6 +136,7 @@ public class doWork extends Thread{
             else titleString = titleSeed + "-"+ allFileCount;
             String tempPath = null;
             try {
+                logger.info("Copying file to working copy");
                 tempPath = CopyToTemp.cp(path);
             } catch (FileNotFoundException ex) {
                 logger.log(Level.SEVERE, null, ex);
