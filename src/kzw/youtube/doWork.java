@@ -130,7 +130,7 @@ public class doWork extends Thread{
             // TODO: set the parameters from UI
             YouTube Yt=new YouTube(YouTubeFrame.privateSetting,"People",YTservice.getService());
             String titleString;
-            if(titleSeed==null || titleSeed.isEmpty()) titleString = path;
+            if(titleSeed==null || titleSeed.isEmpty()) titleString = new File(path).getName();         
             else titleString = titleSeed + "-"+ allFileCount;
             String tempPath;
             try {
@@ -143,6 +143,13 @@ public class doWork extends Thread{
                 logger.log(Level.SEVERE, null, ex);
                 return;
             }
+            //keywords implementation is wrong
+            // total keywords length of 500 characters instead of 120, and each
+            // individual keyword can now be up to 30 characters long instead of 25.//
+            // The YouTube API validation code is being updated to reflect this, and
+            // that change should go live sometime in March.
+            // Solution:  need to put commas between keywords
+            // a way to catch the youtube error
             Yt.setPlayList(playListURL)
                 .setPath(tempPath)
                 .videoTitle(titleString)
