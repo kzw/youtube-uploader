@@ -134,8 +134,18 @@ public class doWork extends Thread{
             String titleString;
             if(titleSeed==null) titleString = path;
             else titleString = titleSeed + "-"+ allFileCount;
+            String tempPath = null;
+            try {
+                tempPath = CopyToTemp.cp(path);
+            } catch (FileNotFoundException ex) {
+                logger.log(Level.SEVERE, null, ex);
+                return;
+            } catch (IOException ex) {
+                logger.log(Level.SEVERE, null, ex);
+                return;
+            }
             Yt.setPlayList(playListURL)
-                .setPath(path)
+                .setPath(tempPath)
                 .videoTitle(titleString)
                 .setKeywords(keywords)
                 .setDescription(description);
@@ -147,7 +157,7 @@ public class doWork extends Thread{
                 Yt.interrupt();
                 return;
             }
-            
+            new File(tempPath).delete();
             if(!Yt.uploadSuccess) return;
             
             UploadDialog.updateFileCountPb(++currentCount, allFileCount, fileCount);

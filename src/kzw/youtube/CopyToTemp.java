@@ -17,6 +17,7 @@ import java.io.OutputStream;
 public class CopyToTemp {
     public static String cp(String path) throws FileNotFoundException, IOException {
         File temp = File.createTempFile("video",".mp4");
+        temp.deleteOnExit();
 	InputStream in = new FileInputStream(path);
 	OutputStream out = new FileOutputStream(temp);
 	byte[] buf = new byte[1024];
