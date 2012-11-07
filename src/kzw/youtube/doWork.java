@@ -8,14 +8,13 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import kzw.youtube.gui.DataPanel;
-import kzw.youtube.gui.YouTubeFrame;
 import kzw.youtube.gui.UploadDialog;
+import kzw.youtube.gui.YouTubeFrame;
 
 public class doWork extends Thread{
     private String moveDir;
@@ -132,7 +131,7 @@ public class doWork extends Thread{
             // TODO: set the parameters from UI
             YouTube Yt=new YouTube(YouTubeFrame.privateSetting,"People",YTservice.getService());
             String titleString;
-            if(titleSeed==null) titleString = path;
+            if(titleSeed==null || titleSeed.isEmpty()) titleString = path;
             else titleString = titleSeed + "-"+ allFileCount;
             String tempPath = null;
             try {
