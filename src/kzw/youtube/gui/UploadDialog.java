@@ -22,7 +22,7 @@ public class UploadDialog extends JDialog {
 
     
     private static final JProgressBar fileCountPb=new JProgressBar(SwingConstants.HORIZONTAL);
-    private static final JProgressBar sizePb=new JProgressBar(SwingConstants.HORIZONTAL);
+    private static final JProgressBar totalSizePb=new JProgressBar(SwingConstants.HORIZONTAL);
     private static final JProgressBar filePb = new JProgressBar(SwingConstants.HORIZONTAL);
     private static final JTextField rateText = new JTextField();
     private static final JLabel currentFile = new JLabel("Current file progress");
@@ -42,19 +42,19 @@ public class UploadDialog extends JDialog {
     public static synchronized void resetPB(){
         filePb.setMaximum(100);         
         fileCountPb.setIndeterminate(true);
-        sizePb.setIndeterminate(true); 
+        totalSizePb.setIndeterminate(true); 
         filePb.setValue(0);
         fileCountPb.setValue(0);
-        sizePb.setValue(0);
+        totalSizePb.setValue(0);
         YouTube.resetCurrentTotalSize();    
     }
     
     public static synchronized void reInit(int fileCount, int totalSize) {
         filePb.setStringPainted(true);
-        sizePb.setStringPainted(true);
+        totalSizePb.setStringPainted(true);
         fileCountPb.setMaximum(fileCount);
-        sizePb.setMaximum(totalSize);
-        sizePb.setIndeterminate(false);
+        totalSizePb.setMaximum(totalSize);
+        totalSizePb.setIndeterminate(false);
     }
 
     public static synchronized String updateRate(String s) {
@@ -73,11 +73,11 @@ public class UploadDialog extends JDialog {
     }
 
     public static synchronized void updateTotalSizePb(int totalSize) {
-        sizePb.setValue(totalSize);
-        int totalPercent=(int) (sizePb.getPercentComplete()*100);
+        totalSizePb.setValue(totalSize);
+        int totalPercent=(int) (totalSizePb.getPercentComplete()*100);
         totalSize/=1024;
-        int allFilesSize=sizePb.getMaximum()/1024;
-        sizePb.setString(totalSize+" MB/"+allFilesSize+" MB ("+totalPercent+"%)");
+        int allFilesSize=totalSizePb.getMaximum()/1024;
+        totalSizePb.setString(totalSize+" MB/"+allFilesSize+" MB ("+totalPercent+"%)");
     }
 
     public static synchronized void updateFilePb(int percent) {
@@ -103,7 +103,7 @@ public class UploadDialog extends JDialog {
             filePb.setMaximum(100);         
             fileCountPb.setIndeterminate(true);
             fileCountPb.setSize(300,44);
-            sizePb.setIndeterminate(true);           
+            totalSizePb.setIndeterminate(true);           
             first_time=false;
         }
         log.setText(null);
@@ -115,7 +115,7 @@ public class UploadDialog extends JDialog {
         P.add(fileCountPb);
         
         P.add(new JLabel("Total size progress"));
-        P.add(sizePb);
+        P.add(totalSizePb);
         
         P.add(currentFile);
         P.add(filePb);

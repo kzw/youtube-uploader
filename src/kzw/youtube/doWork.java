@@ -91,7 +91,6 @@ public class doWork extends Thread{
                 fileSize.put(vp, f.length());
             }
             UploadDialog.reInit(fileCount,totalSize);
-
         } catch (IOException ex) {
             logger.log(Level.SEVERE, null, ex);
         }
@@ -133,7 +132,7 @@ public class doWork extends Thread{
             String titleString;
             if(titleSeed==null || titleSeed.isEmpty()) titleString = path;
             else titleString = titleSeed + "-"+ allFileCount;
-            String tempPath = null;
+            String tempPath;
             try {
                 logger.info("Copying file to working copy");
                 tempPath = CopyToTemp.cp(path);
@@ -200,10 +199,6 @@ public class doWork extends Thread{
         }
         tempObj.delete();
         logger.info("all done");
-    }
-    
-    static synchronized int getTotalSize(){
-        return totalSize;
     }
 
     public doWork setKeywords(String text) {
