@@ -53,6 +53,8 @@ public class DataPanel extends JPanel implements ActionListener{
     
     private final static Pattern pattern = Pattern.compile(".(mp4|dvr-ms|mts|wmv|avi|3gp|mov|mpg)$",Pattern.CASE_INSENSITIVE);
     private File temp = null;
+    private final JTextField keywordsInput = new JTextField();
+    private boolean badKeywords=false;
 
     
     public DataPanel() throws Exception{
@@ -93,7 +95,6 @@ public class DataPanel extends JPanel implements ActionListener{
         
         //<editor-fold defaultstate="collapsed" desc="keywords UI">
         addLabel("Keywords");
-        final JTextField keywordsInput = new JTextField();
         add(keywordsInput);
         //</editor-fold>
         
@@ -289,8 +290,13 @@ public class DataPanel extends JPanel implements ActionListener{
                         .setPlayListURL(playListFeedURL)
                         .setSleep(1L*sleepMinute)
                         .setTitle(titleInput.getText())
-                        .setDescription(descriptionInput.getText())
-                        .setKeywords(keywordsInput.getText());
+                        .setDescription(descriptionInput.getText());
+                String keywords = getKeywords();
+                if(keywords!=null) worker.setKeywords(keywordsInput.getText());
+                else if(badKeywords){
+                    JOptionPane.showMessageDialog(null, "Contains very long keywords and YouTube will reject. Use comma separated words");
+                    return;
+                }
                 worker.start();
                 new UploadDialog();
                 if(worker.isAlive()){
@@ -317,8 +323,7 @@ public class DataPanel extends JPanel implements ActionListener{
         add(label);
     }
     
-    //TODO: use filefilter class
-    public static ArrayList<String> getVideosInDir(File[] allFiles){
+    private ArrayList<String> getVideosInDir(File[] allFiles){
         ArrayList<String> videoPaths=new ArrayList();
         Matcher matcher;
          for (int i=0;i<allFiles.length;i++){
@@ -340,5 +345,23 @@ public class DataPanel extends JPanel implements ActionListener{
             selectedLogLevel=Level.OFF;
         }
     }
-
+    
+    private String getKeywords(){
+        String kw = keywordsInput.getText();
+        if(kw==null) return null;
+        String nicer = "";
+        String[] words =kw.split(",");
+        int num = words.length;
+        num--;
+        for(int i=0;i <= num;i++){
+            String t = words[i].trim();
+            if(t.length()>30){
+                badKeywords = true;
+                return null;
+            }
+            nicer += t;
+            if(i<num) nicer += ',';
+        }
+        return nicer;
+    }
 }

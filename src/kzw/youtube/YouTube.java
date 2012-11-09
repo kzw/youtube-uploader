@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.activation.MimetypesFileTypeMap;
+import javax.swing.JOptionPane;
 import kzw.youtube.gui.DataPanel;
 import kzw.youtube.gui.UploadDialog;
 
@@ -142,8 +143,12 @@ public class YouTube extends Thread{
                                .build();
             } catch (IOException ex) {
                 logger.log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null,"System error occured.  If this recurs, turn on logging.");
+                System.exit(1);
             } catch (ServiceException ex) {
                 logger.log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null,"YouTube returns an error; it did not like something about the request. If this recurs, turn on logging");
+                System.exit(2);
             }
             startEpoch = new Date().getTime();
             uploader.start();
