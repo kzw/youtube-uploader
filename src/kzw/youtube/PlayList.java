@@ -25,7 +25,6 @@ public class PlayList {
         VideoFeed feedList = YTservice.getService().getFeed(new URL(url), VideoFeed.class);
         if(!playListMAP.isEmpty()){
             if(playListMAP.containsKey(name)) return (URL) playListMAP.get(name);
-            return null;
         }
         Matcher m;
         if(feedList.getEntries().isEmpty()){
