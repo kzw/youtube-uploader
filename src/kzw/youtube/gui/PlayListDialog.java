@@ -15,6 +15,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.Date;
 import java.util.Set;
 import java.util.logging.Level;
@@ -126,5 +127,14 @@ class PlayListDialog extends JDialog implements WindowListener{
         System.out.println("selected "+selection);
         if(existingList.contains(selection)) return;
         System.out.println("creating a new playlist "+selection);
+        try {
+            PlayList.create((String)selection);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(PlayListDialog.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(PlayListDialog.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ServiceException ex) {
+            Logger.getLogger(PlayListDialog.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
