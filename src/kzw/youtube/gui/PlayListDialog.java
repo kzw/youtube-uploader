@@ -76,7 +76,10 @@ class PlayListDialog extends JDialog{
                         selectedList,
                         "Create this playlist?",
                         JOptionPane.YES_NO_OPTION);
-                    if (n != JOptionPane.YES_OPTION) return;
+                    if (n != JOptionPane.YES_OPTION) {
+                        PlayListDialog.this.dispose();
+                        return;
+                    }
                     try {
                         PlayList.create(selectedList);
                     } catch (MalformedURLException ex) {
