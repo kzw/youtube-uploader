@@ -9,8 +9,6 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Set;
@@ -31,53 +29,34 @@ import kzw.youtube.PlayList;
  */
 class PlayListDialog extends JDialog{
     
-    private Boolean alreadyConfirmed=false;
     private Set existingList;
     private byte count=0;
+    private String selectedList;
     private final JComboBox toChoose=new JComboBox(new Object[]{"please wait. getting list"});
     
     PlayListDialog(String currentList)  {
         super(Main.frame,true);
+        final String originalSelectedList = currentList;
         JPanel P = new JPanel(new GridLayout(0,2,10,10));
         P.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
         JPanel mainP = new JPanel(new BorderLayout());
         mainP.add(P, BorderLayout.PAGE_START);
         P.add(new JLabel("Select playlist"));
         toChoose.setEnabled(false);
-//        toChoose.getEditor().addActionListener(new ActionListener(){
-//
-//            @Override
-//            public void actionPerformed(ActionEvent ae) {
-//                
-//                PlayListDialog.this.dispose();
-//            }
-//        });
-        toChoose.addActionListener(new ActionListener(){
+        toChoose.setSelectedItem(currentList);
+        toChoose.getEditor().addActionListener(new ActionListener(){
 
             @Override
             public void actionPerformed(ActionEvent ae) {
-                Object selection = toChoose.getSelectedItem();
-                String selectedList = (String) selection;
-                //System.out.println("selected "+selection);
-                if(existingList.contains(selection)) {
-                    if(count>1){
-                        DataPanel.playlistInput.setText(selectedList);
-                        PlayListDialog.this.dispose();
-                    }
-                    count++;
-                    return;
-                }
-                //System.out.println("creating a new playlist "+selection);
-                if(count>1){
-                    if(alreadyConfirmed) return;
-                    alreadyConfirmed=true;
-                    int n = JOptionPane.showConfirmDialog(
+                selectedList = (String) toChoose.getSelectedItem();
+                int n = JOptionPane.showConfirmDialog(
                         Main.frame,
                         selectedList,
                         "Create this playlist?",
                         JOptionPane.YES_NO_OPTION);
                     if (n != JOptionPane.YES_OPTION) {
                         PlayListDialog.this.dispose();
+                        selectedList = originalSelectedList;
                         return;
                     }
                     try {
@@ -88,11 +67,23 @@ class PlayListDialog extends JDialog{
                         Logger.getLogger(PlayListDialog.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (ServiceException ex) {
                         Logger.getLogger(PlayListDialog.class.getName()).log(Level.SEVERE, null, ex);
-                    }                   
-                    DataPanel.playlistInput.setText(selectedList);
-                    PlayListDialog.this.dispose();
+                    }
+            }
+        });
+        toChoose.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                Object selection = toChoose.getSelectedItem();
+                if(null==selection) count++;
+                if(existingList.contains(selection)) {
+                    selectedList = (String) selection;
+                    if(count>1){
+                        PlayListDialog.this.dispose();
+                    }
+                    count++;
+                    return;
                 }
-                count++;
             }
         });
         P.add(toChoose);
@@ -104,6 +95,10 @@ class PlayListDialog extends JDialog{
         setVisible(true);
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 
+    }
+    
+    String getSelection(){
+        return selectedList;
     }
     
     private class getMenuTask extends Thread{

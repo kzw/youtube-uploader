@@ -20,14 +20,12 @@ import java.util.regex.Pattern;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-import kzw.youtube.Main;
 import kzw.youtube.PlayList;
 import kzw.youtube.YTservice;
 import kzw.youtube.YouTubeLogger;
@@ -46,7 +44,7 @@ public class DataPanel extends JPanel implements ActionListener{
     private final static String VERBOSE_LEVEL = "verbose";
     private final static String OFF_LEVEL = "off";
 
-    final static JTextField playlistInput = new JTextField();
+    private final static JTextField playlistInput = new JTextField();
 
     private final JRadioButton infoLevel = new JRadioButton("info");
     private final JRadioButton verboseLevel = new JRadioButton("verbose");
@@ -113,27 +111,8 @@ public class DataPanel extends JPanel implements ActionListener{
             @Override
             public void mouseClicked(MouseEvent me) {
                 if(!login()) return;
-//                Object[] possibilities = null;
-//                try {
-//                    possibilities = PlayList.getList().toArray();
-//                } catch (IOException ex) {
-//                    Logger.getLogger(DataPanel.class.getName()).log(Level.SEVERE, null, ex);
-//                } catch (ServiceException ex) {
-//                    Logger.getLogger(DataPanel.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//                String s = (String)JOptionPane.showInputDialog(
-//                    Main.frame,
-//                    "Complete the sentence:\n"
-//                    + "\"Green eggs and...\"",
-//                    "Customized Dialog",
-//                    JOptionPane.PLAIN_MESSAGE,
-//                    null,
-//                    possibilities,
-//                    "2011 jul");
-//                System.out.print(s);
-                    PlayListDialog pld = new PlayListDialog(playlistInput.getText());
-//                    System.out.println("going to change text box "+pld.selectedList);
-//                    playlistInput.setText(pld.selectedList);          
+                    PlayListDialog pld = new PlayListDialog(playlistInput.getText());  
+                    playlistInput.setText(pld.getSelection());
             }
             //<editor-fold defaultstate="collapsed" desc="no ops">
             @Override
