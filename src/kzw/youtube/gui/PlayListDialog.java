@@ -37,6 +37,8 @@ class PlayListDialog extends JDialog implements WindowListener{
     
     String selectedList;
     private Set existingList;
+    private Boolean finished=false;
+    private Boolean done =false;
     private final JComboBox toChoose=new JComboBox(new Object[]{"please wait. getting list"});
     
     PlayListDialog(String currentList)  {
@@ -50,11 +52,36 @@ class PlayListDialog extends JDialog implements WindowListener{
         mainP.add(P, BorderLayout.PAGE_START);
         P.add(new JLabel("Select playlist"));
         toChoose.setEnabled(false);
-        toChoose.getEditor().addActionListener(new ActionListener(){
+//        toChoose.getEditor().addActionListener(new ActionListener(){
+//
+//            @Override
+//            public void actionPerformed(ActionEvent ae) {
+//                
+//                PlayListDialog.this.dispose();
+//            }
+//        });
+        toChoose.addActionListener(new ActionListener(){
 
             @Override
             public void actionPerformed(ActionEvent ae) {
-                PlayListDialog.this.dispose();
+                Object selection = toChoose.getSelectedItem();
+                selectedList = (String) selection;
+                System.out.println("selected "+selection);
+                if(existingList.contains(selection)) {
+                    return;
+                }
+                System.out.println("creating a new playlist "+selection);
+//                try {
+//                    PlayList.create(selectedList);
+//                } catch (MalformedURLException ex) {
+//                    Logger.getLogger(PlayListDialog.class.getName()).log(Level.SEVERE, null, ex);
+//                } catch (IOException ex) {
+//                    Logger.getLogger(PlayListDialog.class.getName()).log(Level.SEVERE, null, ex);
+//                } catch (ServiceException ex) {
+//                    Logger.getLogger(PlayListDialog.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+                if(finished && done) PlayListDialog.this.dispose();
+                if(finished) done=true;
             }
         });
         P.add(toChoose);
@@ -85,13 +112,10 @@ class PlayListDialog extends JDialog implements WindowListener{
             } catch (ServiceException ex) {
                 Logger.getLogger(PlayListDialog.class.getName()).log(Level.SEVERE, null, ex);
             }
+            finished=true;
         }
     }
     
-    private synchronized void allowSelection(){
-        toChoose.setEditable(true);
-    }
-
     @Override
     public void windowOpened(WindowEvent we) {
         throw new UnsupportedOperationException("Not supported yet.");
@@ -122,19 +146,5 @@ class PlayListDialog extends JDialog implements WindowListener{
 
     @Override
     public void windowDeactivated(WindowEvent we) {
-        Object selection=
-                 toChoose.getSelectedItem();
-        System.out.println("selected "+selection);
-        if(existingList.contains(selection)) return;
-        System.out.println("creating a new playlist "+selection);
-        try {
-            PlayList.create((String)selection);
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(PlayListDialog.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(PlayListDialog.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ServiceException ex) {
-            Logger.getLogger(PlayListDialog.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 }

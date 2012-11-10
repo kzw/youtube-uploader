@@ -133,6 +133,10 @@ public class DataPanel extends JPanel implements ActionListener{
 //                System.out.print(s);
                     PlayListDialog pld = new PlayListDialog(playlistInput.getText());
                     pld.showThis();
+                    playlistInput.setEditable(true);
+                    System.out.println("going to change text box "+pld.selectedList);
+                    playlistInput.setText(pld.selectedList);
+                    playlistInput.setEditable(false);
                 
             }
             //<editor-fold defaultstate="collapsed" desc="no ops">
