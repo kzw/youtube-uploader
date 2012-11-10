@@ -46,7 +46,8 @@ public class DataPanel extends JPanel implements ActionListener{
     private final static String VERBOSE_LEVEL = "verbose";
     private final static String OFF_LEVEL = "off";
 
-    
+    final static JTextField playlistInput = new JTextField();
+
     private final JRadioButton infoLevel = new JRadioButton("info");
     private final JRadioButton verboseLevel = new JRadioButton("verbose");
     private final JRadioButton offLevel = new JRadioButton("off");
@@ -103,7 +104,6 @@ public class DataPanel extends JPanel implements ActionListener{
         //<editor-fold defaultstate="collapsed" desc="playlist UIs">
         // TODO get this from drop down.. allow creation
         addLabel("Move videos to this playlist");
-        final JTextField playlistInput = new JTextField();
         add(playlistInput);
         playlistInput.setText(P.get(PLAYLIST_KEY, ""));
         playlistInput.setEditable(false);
@@ -132,12 +132,8 @@ public class DataPanel extends JPanel implements ActionListener{
 //                    "2011 jul");
 //                System.out.print(s);
                     PlayListDialog pld = new PlayListDialog(playlistInput.getText());
-                    pld.showThis();
-                    playlistInput.setEditable(true);
-                    System.out.println("going to change text box "+pld.selectedList);
-                    playlistInput.setText(pld.selectedList);
-                    playlistInput.setEditable(false);
-                
+//                    System.out.println("going to change text box "+pld.selectedList);
+//                    playlistInput.setText(pld.selectedList);          
             }
             //<editor-fold defaultstate="collapsed" desc="no ops">
             @Override

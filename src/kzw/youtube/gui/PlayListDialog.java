@@ -9,22 +9,18 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.Date;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import kzw.youtube.Main;
 import kzw.youtube.PlayList;
@@ -33,19 +29,15 @@ import kzw.youtube.PlayList;
  *
  * @author me
  */
-class PlayListDialog extends JDialog implements WindowListener{
+class PlayListDialog extends JDialog{
     
-    String selectedList;
+    private Boolean alreadyConfirmed=false;
     private Set existingList;
-    private Boolean finished=false;
-    private Boolean done =false;
+    private byte count=0;
     private final JComboBox toChoose=new JComboBox(new Object[]{"please wait. getting list"});
     
     PlayListDialog(String currentList)  {
         super(Main.frame,true);
-        selectedList = currentList;
-        getMenuTask mt = new getMenuTask();
-        mt.start();
         JPanel P = new JPanel(new GridLayout(0,2,10,10));
         P.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
         JPanel mainP = new JPanel(new BorderLayout());
@@ -65,35 +57,52 @@ class PlayListDialog extends JDialog implements WindowListener{
             @Override
             public void actionPerformed(ActionEvent ae) {
                 Object selection = toChoose.getSelectedItem();
-                selectedList = (String) selection;
-                System.out.println("selected "+selection);
+                String selectedList = (String) selection;
+                //System.out.println("selected "+selection);
                 if(existingList.contains(selection)) {
+                    if(count>1){
+                        DataPanel.playlistInput.setText(selectedList);
+                        PlayListDialog.this.dispose();
+                    }
+                    count++;
                     return;
                 }
-                System.out.println("creating a new playlist "+selection);
-//                try {
-//                    PlayList.create(selectedList);
-//                } catch (MalformedURLException ex) {
-//                    Logger.getLogger(PlayListDialog.class.getName()).log(Level.SEVERE, null, ex);
-//                } catch (IOException ex) {
-//                    Logger.getLogger(PlayListDialog.class.getName()).log(Level.SEVERE, null, ex);
-//                } catch (ServiceException ex) {
-//                    Logger.getLogger(PlayListDialog.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-                if(finished && done) PlayListDialog.this.dispose();
-                if(finished) done=true;
+                //System.out.println("creating a new playlist "+selection);
+                if(count>1){
+                    if(alreadyConfirmed) return;
+                    alreadyConfirmed=true;
+                    int n = JOptionPane.showConfirmDialog(
+                        Main.frame,
+                        selectedList,
+                        "Create this playlist?",
+                        JOptionPane.YES_NO_OPTION);
+                    if (n == JOptionPane.NO_OPTION){
+                        return;
+                    }
+                    try {
+                        PlayList.create(selectedList);
+                    } catch (MalformedURLException ex) {
+                        Logger.getLogger(PlayListDialog.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
+                        Logger.getLogger(PlayListDialog.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ServiceException ex) {
+                        Logger.getLogger(PlayListDialog.class.getName()).log(Level.SEVERE, null, ex);
+                    }                   
+                    DataPanel.playlistInput.setText(selectedList);
+                    PlayListDialog.this.dispose();
+                }
+                count++;
             }
         });
         P.add(toChoose);
         add(mainP);
         pack();
         setLocationRelativeTo(Main.frame);
-    }
-    
-    void showThis(){
+        getMenuTask mt = new getMenuTask();
+        mt.start();
         setVisible(true);
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-        addWindowListener(this);
+
     }
     
     private class getMenuTask extends Thread{
@@ -112,39 +121,7 @@ class PlayListDialog extends JDialog implements WindowListener{
             } catch (ServiceException ex) {
                 Logger.getLogger(PlayListDialog.class.getName()).log(Level.SEVERE, null, ex);
             }
-            finished=true;
         }
     }
-    
-    @Override
-    public void windowOpened(WindowEvent we) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 
-    @Override
-    public void windowClosing(WindowEvent we) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public void windowClosed(WindowEvent we) {
-    }
-
-    @Override
-    public void windowIconified(WindowEvent we) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public void windowDeiconified(WindowEvent we) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public void windowActivated(WindowEvent we) {
-    }
-
-    @Override
-    public void windowDeactivated(WindowEvent we) {
-    }
 }
