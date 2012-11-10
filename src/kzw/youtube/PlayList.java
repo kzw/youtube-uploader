@@ -6,6 +6,7 @@ import com.google.gdata.util.ServiceException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,26 +21,35 @@ public class PlayList {
    private static HashMap playListMAP =new HashMap();
    private final static Pattern playListURLPattern = Pattern.compile("tag:youtube.+:user:.+:playlist:(.+)$");
 
-   public static URL getURL(String name) throws IOException, ServiceException{
-        String url = "http://gdata.youtube.com/feeds/api/users/"+YTservice.getUser()+"/playlists";
+   public static Set getList() throws IOException, ServiceException{
+       if(playListMAP.isEmpty()) getMap();
+       return playListMAP.keySet();
+   }
+   
+   private static void getMap() throws IOException, ServiceException{
+        String url = "http://gdata.youtube.com/feeds/api/users/default/playlists";
         VideoFeed feedList = YTservice.getService().getFeed(new URL(url), VideoFeed.class);
-        if(!playListMAP.isEmpty()){
-            if(playListMAP.containsKey(name)) return (URL) playListMAP.get(name);
-        }
         Matcher m;
         if(feedList.getEntries().isEmpty()){
             System.out.println("No entries in play list");
-            return null;
+            return;
         }
         for (VideoEntry v: feedList.getEntries()){
             m=playListURLPattern.matcher(v.getId());
             if(!m.find()){
-                System.out.println("Cannot parse playlist ID");
-                return null;
+                System.err.println("Cannot parse playlist ID");
+                return;
             }
             url="http://gdata.youtube.com/feeds/api/playlists/"+m.group(1);
             playListMAP.put(v.getTitle().getPlainText(),new URL(url));
+        }   
+   }
+  
+   public static URL getURL(String name) throws IOException, ServiceException {
+        if(!playListMAP.isEmpty()){
+            if(playListMAP.containsKey(name)) return (URL) playListMAP.get(name);
         }
+        getMap();
         if(playListMAP !=null && playListMAP.containsKey(name)) return (URL) playListMAP.get(name);
         return null;
     }

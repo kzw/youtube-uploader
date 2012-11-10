@@ -20,12 +20,14 @@ import java.util.regex.Pattern;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import kzw.youtube.Main;
 import kzw.youtube.PlayList;
 import kzw.youtube.YTservice;
 import kzw.youtube.YouTubeLogger;
@@ -104,7 +106,53 @@ public class DataPanel extends JPanel implements ActionListener{
         final JTextField playlistInput = new JTextField();
         add(playlistInput);
         playlistInput.setText(P.get(PLAYLIST_KEY, ""));
-        playlistInput.setToolTipText("Type playlist to move your uploaded videos");
+        playlistInput.setEditable(false);
+        playlistInput.setToolTipText("Click here to select playlist to move your uploaded videos");
+        playlistInput.addMouseListener(new MouseListener(){
+
+            @Override
+            public void mouseClicked(MouseEvent me) {
+                if(!login()) return;
+//                Object[] possibilities = null;
+//                try {
+//                    possibilities = PlayList.getList().toArray();
+//                } catch (IOException ex) {
+//                    Logger.getLogger(DataPanel.class.getName()).log(Level.SEVERE, null, ex);
+//                } catch (ServiceException ex) {
+//                    Logger.getLogger(DataPanel.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//                String s = (String)JOptionPane.showInputDialog(
+//                    Main.frame,
+//                    "Complete the sentence:\n"
+//                    + "\"Green eggs and...\"",
+//                    "Customized Dialog",
+//                    JOptionPane.PLAIN_MESSAGE,
+//                    null,
+//                    possibilities,
+//                    "2011 jul");
+//                System.out.print(s);
+                    PlayListDialog pld = new PlayListDialog(playlistInput.getText());
+                    pld.showThis();
+                
+            }
+            //<editor-fold defaultstate="collapsed" desc="no ops">
+            @Override
+            public void mousePressed(MouseEvent me) {
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent me) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent me) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent me) {
+            }
+            //</editor-fold>
+        });
         //</editor-fold>
         
         //<editor-fold defaultstate="collapsed" desc="move to folder UI">
@@ -246,27 +294,14 @@ public class DataPanel extends JPanel implements ActionListener{
             public void actionPerformed(ActionEvent ae) {
                 logger.setLevel(DataPanel.selectedLogLevel);
                 if(!uploadButton.isEnabled()) return;
+                System.out.println();
                 String sleepString = sleepValue.getText();
                 if(sleepString.equals("")) sleepString="0";
                 Integer sleepMinute = Integer.parseInt(sleepString);
                               
                 //<editor-fold defaultstate="collapsed" desc="get user and password and login">
                 
-                String userNameString=YouTubeFrame.UserNameString;
-                if(userNameString.isEmpty()){
-                    JOptionPane.showMessageDialog(null,"Username required.  Set it in the menu");
-                    return;
-                }
-                String passwordString = YouTubeFrame.PasswordString;
-                if(passwordString.isEmpty()){
-                    JOptionPane.showMessageDialog(null, "Password required.  Set it in the menu");
-                    return;
-                }
-
-                if(!YTservice.login(userNameString, passwordString)){
-                    JOptionPane.showMessageDialog(null,"Cannot login.  Check credentials");
-                    return;
-                }
+                if(!login()) return;
                 //</editor-fold>
                 
                 //<editor-fold defaultstate="collapsed" desc="get playlist url">
@@ -363,5 +398,24 @@ public class DataPanel extends JPanel implements ActionListener{
             if(i<num) nicer += ',';
         }
         return nicer;
+    }
+    
+    private boolean login(){
+        String userNameString=YouTubeFrame.UserNameString;
+        if(userNameString.isEmpty()){
+            JOptionPane.showMessageDialog(null,"Username required.  Set it in the menu");
+            return false;
+        }
+        String passwordString = YouTubeFrame.PasswordString;
+        if(passwordString.isEmpty()){
+            JOptionPane.showMessageDialog(null, "Password required.  Set it in the menu");
+            return false;
+        }
+
+        if(!YTservice.login(userNameString, passwordString)){
+            JOptionPane.showMessageDialog(null,"Cannot login.  Check credentials");
+            return false;
+        }
+        return true;
     }
 }
