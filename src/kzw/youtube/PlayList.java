@@ -61,7 +61,7 @@ public class PlayList {
 
         PlaylistLinkEntry newEntry = new PlaylistLinkEntry();
         newEntry.setTitle(new PlainTextConstruct(name));
-        newEntry.setSummary(new PlainTextConstruct(name));
+        //newEntry.setSummary(new PlainTextConstruct(name));
         newEntry.setPrivate(true);
         PlaylistLinkEntry createdEntry = YTservice.getService().insert(new URL(listOfListURL), newEntry);
         playListMAP.put(name, new URL(BASE_URL + createdEntry.getPlaylistId()));
