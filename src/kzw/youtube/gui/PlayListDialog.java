@@ -37,11 +37,12 @@ class PlayListDialog extends JDialog{
     PlayListDialog(String currentList)  {
         super(Main.frame,true);
         final String originalSelectedList = currentList;
-        JPanel P = new JPanel(new GridLayout(0,2,10,10));
+        JPanel P = new JPanel(new GridLayout(0,1,10,10));
         P.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
         JPanel mainP = new JPanel(new BorderLayout());
         mainP.add(P, BorderLayout.PAGE_START);
-        P.add(new JLabel("Select playlist"));
+        P.add(new JLabel("Select or create playlist"));
+        toChoose.setToolTipText("Select existing or type new playlist here and press ENTER");
         toChoose.setEnabled(false);
         toChoose.setSelectedItem(currentList);
         toChoose.getEditor().addActionListener(new ActionListener(){
@@ -94,12 +95,9 @@ class PlayListDialog extends JDialog{
         mt.start();
         setVisible(true);
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-
     }
     
-    String getSelection(){
-        return selectedList;
-    }
+    String getSelection(){ return selectedList; }
     
     private class getMenuTask extends Thread{
         @Override
