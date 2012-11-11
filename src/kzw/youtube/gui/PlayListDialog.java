@@ -84,7 +84,6 @@ class PlayListDialog extends JDialog{
                         PlayListDialog.this.dispose();
                     }
                     count++;
-                    return;
                 }
             }
         });
