@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -83,7 +84,6 @@ class PlayListDialog extends JDialog{
                         PlayListDialog.this.dispose();
                     }
                     count++;
-                    return;
                 }
             }
         });
@@ -105,7 +105,9 @@ class PlayListDialog extends JDialog{
             try {
                 existingList = PlayList.getList();
                 toChoose.removeAllItems();
-                for (Object o: existingList){
+                Object[] playListArray = existingList.toArray(new String[0]);
+                Arrays.sort(playListArray);
+                for (Object o: playListArray){
                     toChoose.addItem(o);
                 }
                 toChoose.setEnabled(true);
