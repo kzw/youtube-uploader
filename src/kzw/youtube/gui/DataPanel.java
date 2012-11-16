@@ -26,10 +26,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.SpringLayout;
+import javax.swing.border.BevelBorder;
 import kzw.youtube.PlayList;
 import kzw.youtube.YTservice;
 import kzw.youtube.YouTubeLogger;
 import kzw.youtube.doWork;
+import springutilities.SpringUtilities;
 
 public class DataPanel extends JPanel implements ActionListener{
     
@@ -59,11 +62,11 @@ public class DataPanel extends JPanel implements ActionListener{
 
     
     public DataPanel() throws Exception{
-        super(new GridLayout(0,2));
-        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        super(new SpringLayout());
+        setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
         
         //<editor-fold defaultstate="collapsed" desc="log level UI">
-        addLabel("Select log level");
+        JLabel la = addLabel("Select log level");
         final ButtonGroup bg = new ButtonGroup();
         bg.add(offLevel);
         bg.add(infoLevel);
@@ -79,29 +82,34 @@ public class DataPanel extends JPanel implements ActionListener{
         buttonP.add(offLevel);
         buttonP.add(infoLevel);
         buttonP.add(verboseLevel);
+        la.setLabelFor(buttonP);
         add(buttonP);
         //</editor-fold>
         
         //<editor-fold defaultstate="collapsed" desc="title seed UI">
-        addLabel("Title seed");
+        la = addLabel("Title seed");
         final JTextField titleInput = new JTextField();
+        la.setLabelFor(titleInput);
         add(titleInput);
         //</editor-fold>
         
         //<editor-fold defaultstate="collapsed" desc="Description UI">        
-        addLabel("Description");
+        la = addLabel("Description");
         final JTextField descriptionInput = new JTextField();
+        la.setLabelFor(descriptionInput);
         add(descriptionInput);
         //</editor-fold>
         
         //<editor-fold defaultstate="collapsed" desc="keywords UI">
-        addLabel("Keywords");
+        la = addLabel("Keywords");
+        la.setLabelFor(keywordsInput);
         add(keywordsInput);
         //</editor-fold>
         
         //<editor-fold defaultstate="collapsed" desc="playlist UIs">
         // TODO get this from drop down.. allow creation
-        addLabel("Move videos to this playlist");
+        la = addLabel("Move videos to this playlist");
+        la.setLabelFor(playlistInput);
         add(playlistInput);
         playlistInput.setText(P.get(PLAYLIST_KEY, ""));
         playlistInput.setEditable(false);
@@ -135,7 +143,7 @@ public class DataPanel extends JPanel implements ActionListener{
         //</editor-fold>
         
         //<editor-fold defaultstate="collapsed" desc="move to folder UI">
-        addLabel("folder to move to after upload");
+        la = addLabel("folder to move to after upload");
         final JTextField moveFolder = new JTextField();
         moveFolder.setEditable(false);
         moveFolder.addMouseListener(new MouseListener(){
@@ -167,15 +175,17 @@ public class DataPanel extends JPanel implements ActionListener{
             public void mouseExited(MouseEvent me) { }
             //</editor-fold>
         });
+        la.setLabelFor(moveFolder);
         add(moveFolder);
         moveFolder.setText(P.get(MOVEFOLDER_KEY, null));
         moveFolder.setToolTipText("Click here to set a folder on your computer to move uploaded files");
         //</editor-fold>
         
         //<editor-fold defaultstate="collapsed" desc="choose video UI part 1">
-        addLabel("choose videos");
+        la = addLabel("choose videos");
         final JTextField videos = new JTextField();
         videos.setEditable(false);
+        la.setLabelFor(videos);
         videos.setText(P.get(LAST_DIR, ""));
         //</editor-fold>
         
@@ -259,13 +269,16 @@ public class DataPanel extends JPanel implements ActionListener{
         //</editor-fold>
         
         //<editor-fold defaultstate="collapsed" desc="sleep UI">
-        addLabel("sleep/minute");
+        la = addLabel("sleep/minute");
         final JTextField sleepValue = new JTextField();
+        la.setLabelFor(sleepValue);
         add(sleepValue);
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="upload button UI">         
         uploadButton.setEnabled(false);
+        la = addLabel("");
+        la.setLabelFor(uploadButton);
         add(uploadButton);
         uploadButton.addActionListener(new ActionListener(){
 
@@ -324,6 +337,10 @@ public class DataPanel extends JPanel implements ActionListener{
             }
         });
         //</editor-fold>
+        SpringUtilities.makeCompactGrid(this,
+            9, 2, //rows, cols
+            6, 6,        //initX, initY
+            6, 6); 
     }
     
     void addListeners(){
@@ -332,9 +349,10 @@ public class DataPanel extends JPanel implements ActionListener{
         offLevel.addActionListener(this);        
     }
           
-    private void addLabel(String labelText){
-        JLabel label = new JLabel(labelText);
+    private JLabel addLabel(String labelText){
+        JLabel label = new JLabel(labelText, JLabel.TRAILING);
         add(label);
+        return label;
     }
     
     private ArrayList<String> getVideosInDir(File[] allFiles){
