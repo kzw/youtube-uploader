@@ -93,7 +93,7 @@ class PlayListDialog extends JDialog{
         add(mainP);
         pack();
         setLocationRelativeTo(Main.frame);
-        getMenuTask mt = new getMenuTask();
+        GetPlayListDataTask mt = new GetPlayListDataTask();
         mt.start();
         this.addWindowListener(new WindowAdapter(){
         
@@ -108,7 +108,7 @@ class PlayListDialog extends JDialog{
     
     String getSelection(){ return selectedList; }
     
-    private class getMenuTask extends Thread{
+    private class GetPlayListDataTask extends Thread{
         @Override
         public void run(){
             try {
@@ -128,5 +128,4 @@ class PlayListDialog extends JDialog{
             }
         }
     }
-
 }
