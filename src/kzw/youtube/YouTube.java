@@ -199,7 +199,6 @@ public class YouTube extends Thread{
             System.exit(2);
         }
         logger.log(Level.FINE, "video id is {0}", createdEntry.getMediaGroup().getVideoId());
-        System.err.println("preparing for playlist work");
         if(afterPlayListURL!=null){
             System.err.println("moving to playlist");
             logger.fine("Moving to playlist");

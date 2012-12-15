@@ -9,6 +9,8 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Arrays;
@@ -93,6 +95,13 @@ class PlayListDialog extends JDialog{
         setLocationRelativeTo(Main.frame);
         getMenuTask mt = new getMenuTask();
         mt.start();
+        this.addWindowListener(new WindowAdapter(){
+        
+            @Override
+            public void windowClosing(WindowEvent e) {
+                selectedList=null;            
+            }
+        });
         setVisible(true);
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
     }
